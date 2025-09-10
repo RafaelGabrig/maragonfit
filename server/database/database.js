@@ -1,7 +1,13 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const fs = require('fs');
 
-const dbPath = path.join(__dirname, 'maragonfit.db');
+// Use volume mount path in production, local path in development
+const isProduction = process.env.NODE_ENV === 'production' || fs.existsSync('/app/data');
+const dbPath = isProduction 
+    ? '/app/data/maragonfit.db' 
+    : path.join(__dirname, 'maragonfit.db');
+
 let db;
 
 const init = () => {

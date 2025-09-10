@@ -36,4 +36,4 @@ kill_timeout = "5s"
 
 [[mounts]]
   source = "maragonfit_data"
-  destination = "/app/server/database"
+  destination = "/app/data"
