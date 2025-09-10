@@ -3,7 +3,7 @@ class MaragonFitApp {
     constructor() {
         this.currentUser = null;
         this.currentView = 'auth';
-        this.apiUrl = 'http://localhost:3000/api';
+        this.apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api';
         this.init();
     }
 
