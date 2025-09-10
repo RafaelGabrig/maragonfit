@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>MaragonFit - Tu Gimnasio de Confianza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        dark: '#1f2937',
+                        accent: '#60a5fa',
+                        maragon: '#000000'
+                    },
+                    fontFamily: {
+                        'maragon': ['Arial', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .maragon-logo {
+            background: linear-gradient(135deg, #000000 0%, #333333 100%);
+            transform: perspective(1000px) rotateY(-10deg);
+            transition: all 0.3s ease;
+        }
+        .maragon-logo:hover {
+            transform: perspective(1000px) rotateY(0deg) scale(1.05);
+        }
+        .maragon-text {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .logo-glow {
+            box-shadow: 0 0 20px rgba(0,0,0,0.3), 0 0 40px rgba(0,0,0,0.2);
+        }
+        @keyframes pulse-logo {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        .animate-pulse-logo {
+            animation: pulse-logo 3s ease-in-out infinite;
+        }
+        .modal-enter {
+            animation: modalEnter 0.3s ease-out;
+        }
+        @keyframes modalEnter {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.9) translateY(-20px); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: scale(1) translateY(0); 
+            }
+        }
+        
+        /* Responsividade para telas muito pequenas */
+        @media (max-width: 440px) {
+            /* Garantir que o body ocupe toda a largura */
+            body {
+                overflow-x: hidden !important;
+                min-width: 320px !important;
+                width: 100vw !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            /* Container principal centralizado */
+            .container {
+                width: 100% !important;
+                max-width: 100vw !important;
+                margin: 0 auto !important;
+                padding-left: 8px !important;
+                padding-right: 8px !important;
+                box-sizing: border-box !important;
+            }
+            
+            /* Todos os containers de conteúdo */
+            .max-w-md, .max-w-2xl, .max-w-3xl, .max-w-4xl, .max-w-6xl {
+                width: calc(100vw - 16px) !important;
+                max-width: calc(100vw - 16px) !important;
+                margin: 0 auto !important;
+                padding: 8px !important;
+                box-sizing: border-box !important;
+            }
+            
+            /* Header responsivo */
+            header {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 8px 4px !important;
+                box-sizing: border-box !important;
+            }
+            
+            /* Main content */
+            main {
+                width: 100% !important;
+                padding: 8px 4px !important;
+                margin: 0 !important;
+                box-sizing: border-box !important;
+            }
+            
+            /* Centralização forçada */
+            .mx-auto {
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+            
+            .text-center {
+                text-align: center !important;
+            }
+            
+            .flex {
+                justify-content: center !important;
+                align-items: center !important;
+            }
+            
+            .justify-between {
+                justify-content: center !important;
+            }
+            
+            /* Cards e elementos brancos */
+            .bg-white {
+                width: calc(100% - 16px) !important;
+                margin: 8px auto !important;
+                padding: 12px !important;
+                box-sizing: border-box !important;
+            }
+            
+            /* Ajustes do header */
+            .text-5xl { font-size: 2.5rem !important; }
+            .text-4xl { font-size: 2rem !important; }
+            .text-3xl { font-size: 1.75rem !important; }
+            .text-2xl { font-size: 1.5rem !important; }
+            
+            /* Logos menores */
+            .maragon-logo {
+                padding: 0.75rem !important;
+            }
+            
+            /* Formulários responsivos */
+            .max-w-md { max-width: 100% !important; }
+            .max-w-2xl { max-width: 100% !important; }
+            .max-w-3xl { max-width: 100% !important; }
+            
+            /* Botões responsivos */
+            .btn, button {
+                padding: 8px 12px !important;
+                font-size: 0.875rem !important;
+                width: 100% !important;
+                margin: 4px 0 !important;
+                box-sizing: border-box !important;
+                min-height: 40px !important;
+            }
+            
+            /* Botões do header em mobile */
+            @media (max-width: 440px) {
+                .mobile-full-width {
+                    width: 100% !important;
+                    margin: 2px 0 !important;
+                }
+            }
+            
+            /* Inputs responsivos */
+            input, select, textarea {
+                padding: 8px !important;
+                font-size: 0.875rem !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                min-height: 40px !important;
+            }
+            
+            /* Cards de aulas */
+            .bg-white.rounded-xl {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                border-radius: 0.5rem !important;
+            }
+            
+            /* Espaçamentos menores */
+            .mb-8 { margin-bottom: 1.5rem !important; }
+            .mb-6 { margin-bottom: 1rem !important; }
+            .mb-4 { margin-bottom: 0.75rem !important; }
+            
+            /* Grid responsivo */
+            .grid-cols-2 { grid-template-columns: 1fr !important; }
+            .md\\:grid-cols-2 { grid-template-columns: 1fr !important; }
+            
+            /* Flex direction stack */
+            .flex.justify-center.items-center {
+                flex-direction: column !important;
+                gap: 0.5rem !important;
+            }
+            
+            /* Modal responsivo */
+            .fixed.inset-0 .bg-white {
+                margin: 0.5rem !important;
+                max-height: calc(100vh - 1rem) !important;
+                overflow-y: auto !important;
+            }
+        }
+        
+        @media (max-width: 375px) {
+            /* Ajustes para telas muito pequenas */
+            .container {
+                padding-left: 4px !important;
+                padding-right: 4px !important;
+            }
+            
+            .max-w-md, .max-w-2xl, .max-w-3xl, .max-w-4xl, .max-w-6xl {
+                width: calc(100vw - 8px) !important;
+                padding: 4px !important;
+            }
+            
+            .text-lg { font-size: 1rem !important; }
+            .text-xl { font-size: 1.125rem !important; }
+            .text-2xl { font-size: 1.125rem !important; }
+            
+            /* Logos ainda menores */
+            .h-20 { height: 3rem !important; width: 3rem !important; }
+            .h-16 { height: 2.5rem !important; width: 2.5rem !important; }
+            .h-14 { height: 2rem !important; width: 2rem !important; }
+            .h-10 { height: 1.75rem !important; width: 1.75rem !important; }
+            .h-8 { height: 1.5rem !important; width: 1.5rem !important; }
+            
+            .logo-img {
+                width: 16px !important;
+                height: 16px !important;
+            }
+            
+            /* Botões menores */
+            .btn, button {
+                padding: 6px 8px !important;
+                font-size: 0.8rem !important;
+                min-height: 36px !important;
+            }
+            
+            /* Inputs menores */
+            input, select, textarea {
+                padding: 6px !important;
+                font-size: 0.8rem !important;
+                min-height: 36px !important;
+            }
+            
+            /* Header menor */
+            header {
+                padding: 6px 2px !important;
+            }
+        }
+        
+        @media (max-width: 320px) {
+            /* Ajustes para as menores telas */
+            .container {
+                padding-left: 2px !important;
+                padding-right: 2px !important;
+            }
+            
+            .max-w-md, .max-w-2xl, .max-w-3xl, .max-w-4xl, .max-w-6xl {
+                width: calc(100vw - 4px) !important;
+                padding: 2px !important;
+            }
+            
+            /* Textos muito pequenos */
+            h1 { font-size: 1rem !important; }
+            h2 { font-size: 0.95rem !important; }
+            .text-xl { font-size: 0.9rem !important; }
+            .text-lg { font-size: 0.85rem !important; }
+            .text-2xl { font-size: 1rem !important; }
+            
+            /* Logos mínimos */
+            .logo-img {
+                width: 14px !important;
+                height: 14px !important;
+            }
+            
+            .h-8 { height: 1.25rem !important; width: 1.25rem !important; }
+            .h-10 { height: 1.5rem !important; width: 1.5rem !important; }
+            
+            /* Botões muito pequenos */
+            .btn, button {
+                padding: 4px 6px !important;
+                font-size: 0.75rem !important;
+                min-height: 32px !important;
+            }
+            
+            /* Inputs muito pequenos */
+            input, select, textarea {
+                padding: 4px !important;
+                font-size: 0.75rem !important;
+                min-height: 32px !important;
+            }
+            
+            /* Espaçamentos mínimos */
+            .px-4 { padding-left: 0.25rem !important; padding-right: 0.25rem !important; }
+            .py-8 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+            .py-6 { padding-top: 0.375rem !important; padding-bottom: 0.375rem !important; }
+            .py-4 { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
+            
+            /* Header mínimo */
+            header {
+                padding: 4px 1px !important;
+            }
+            
+            /* Cards com padding mínimo */
+            .bg-white {
+                padding: 6px !important;
+                margin: 4px auto !important;
+            }
+        }
+        .admin-btn {
+            transition: all 0.3s ease;
+            border-radius: 50%;
+        }
+        .admin-btn:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Force image loading and visibility */
+        .logo-img {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            max-width: 100% !important;
+            height: auto !important;
+        }
+        
+        /* Ensure all logo images are visible */
+        img[src*="logofit.jpeg"] {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-black text-white shadow-2xl">
+        <div class="container mx-auto px-2 sm:px-4 py-4 sm:py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <!-- Logo MaragonFit -->
+                    <div class="flex items-center mr-2 sm:mr-6 animate-pulse-logo">
+                        <div class="maragon-logo bg-white p-2 sm:p-4 rounded-xl sm:rounded-2xl mr-2 sm:mr-4 logo-glow">
+                            <div class="flex items-center justify-center">
+                                <img src="assets/images/logofit.jpeg" alt="MaragonFit Logo" class="h-12 w-12 sm:h-16 sm:w-16 object-contain rounded-lg logo-img">
+                            </div>
+                        </div>
+                        <div class="text-left">
+                            <h1 class="text-2xl sm:text-4xl font-bold tracking-wider maragon-text" style="letter-spacing: 2px;">MARAGONFIT</h1>
+                            <p class="text-sm sm:text-lg text-gray-300 tracking-widest font-medium" style="letter-spacing: 1px;">GYM CENTER</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="userMenu" class="hidden">
+                    <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 px-6 py-3 rounded-lg transition-colors font-bold shadow-lg">
+                        <i class="fas fa-sign-out-alt mr-2"></i>Salir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+        <!-- Login/Register Section -->
+        <section id="authSection" class="max-w-md mx-auto">
+            <div class="bg-white rounded-xl shadow-2xl p-4 sm:p-8">
+                <!-- Logo Prominente -->
+                <div class="text-center mb-6 sm:mb-8 animate-pulse-logo">
+                    <div class="flex justify-center items-center mb-4 sm:mb-6">
+                        <div class="maragon-logo bg-black p-4 sm:p-8 rounded-2xl sm:rounded-3xl logo-glow">
+                            <div class="flex items-center justify-center">
+                                <img src="assets/images/logofit.jpeg" alt="MaragonFit Logo" class="h-16 w-16 sm:h-20 sm:w-20 object-contain rounded-lg logo-img">
+                            </div>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl sm:text-5xl font-bold text-black mb-2 sm:mb-3 maragon-text" style="letter-spacing: 2px;">MARAGONFIT</h1>
+                    <p class="text-lg sm:text-xl text-gray-600 font-bold tracking-widest mb-3 sm:mb-4" style="letter-spacing: 2px;">GYM CENTER</p>
+                    <div class="w-16 sm:w-20 h-1 bg-black mx-auto mb-3 sm:mb-4"></div>
+                    <p class="text-sm sm:text-base text-gray-500 font-medium">Tu gimnasio de confianza</p>
+                </div>
+
+                <!-- Toggle Buttons -->
+                <div class="flex mb-4 sm:mb-6 bg-gray-100 rounded-lg p-1">
+                    <button id="loginTab" class="flex-1 py-2 sm:py-3 px-4 sm:px-6 rounded-md font-bold transition-colors bg-black text-white shadow-lg text-sm sm:text-base">
+                        Iniciar Sesión
+                    </button>
+                    <button id="registerTab" class="flex-1 py-2 sm:py-3 px-4 sm:px-6 rounded-md font-bold transition-colors text-gray-600 hover:text-black hover:bg-gray-100 text-sm sm:text-base">
+                        Registrarse
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="space-y-3 sm:space-y-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Teléfono</label>
+                        <input type="tel" id="loginPhone" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base" placeholder="Ej: +34 600 123 456" required>
+                    </div>
+                    <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-lg transition-colors shadow-lg text-sm sm:text-base">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
+                    </button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="space-y-3 sm:space-y-4 hidden">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Nombre Completo</label>
+                        <input type="text" id="registerName" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base" placeholder="Tu nombre completo" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Teléfono</label>
+                        <input type="tel" id="registerPhone" class="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base" placeholder="Ej: +34 600 123 456" required>
+                    </div>
+                    <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-lg transition-colors shadow-lg text-sm sm:text-base">
+                        <i class="fas fa-user-plus mr-2"></i>Crear Cuenta
+                    </button>
+                </form>
+
+
+            </div>
+        </section>
+
+        <!-- User Dashboard -->
+        <section id="userDashboard" class="hidden">
+            <!-- Logo Section -->
+            <div class="text-center mb-6 sm:mb-8">
+                <div class="flex flex-col sm:flex-row justify-center items-center mb-4 sm:mb-6 animate-pulse-logo">
+                    <div class="maragon-logo bg-black p-3 sm:p-5 rounded-xl sm:rounded-2xl logo-glow mb-2 sm:mb-0 sm:mr-4">
+                        <div class="flex items-center justify-center">
+                            <img src="assets/images/logofit.jpeg" alt="MaragonFit Logo" class="h-12 w-12 sm:h-14 sm:w-14 object-contain rounded-lg">
+                        </div>
+                    </div>
+                    <div class="text-center sm:text-left">
+                        <h1 class="text-2xl sm:text-3xl font-bold text-black tracking-wider maragon-text" style="letter-spacing: 2px;">MARAGONFIT</h1>
+                        <p class="text-base sm:text-lg text-gray-600 tracking-widest font-medium" style="letter-spacing: 1px;">GYM CENTER</p>
+                    </div>
+                </div>
+                <div class="w-32 h-1 bg-black mx-auto mb-6"></div>
+            </div>
+            
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-dark mb-2">Mis Clases</h2>
+                <p class="text-gray-600">Reserva y gestiona tus clases de entrenamiento</p>
+            </div>
+
+            <!-- User Info -->
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+                <div class="flex items-center">
+                    <i class="fas fa-user-circle text-primary text-3xl mr-4"></i>
+                    <div>
+                        <h3 id="userName" class="font-bold text-dark">Usuario</h3>
+                        <p id="userPhone" class="text-gray-600">Teléfono</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classes List -->
+            <div id="classesList" class="space-y-4">
+                <!-- Classes will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Admin Panel -->
+        <section id="adminPanel" class="hidden">
+            <!-- Logo Section -->
+            <div class="text-center mb-8">
+                <div class="flex justify-center items-center mb-6 animate-pulse-logo">
+                    <div class="maragon-logo bg-black p-5 rounded-2xl logo-glow mr-4">
+                        <div class="flex items-center justify-center">
+                            <img src="assets/images/logofit.jpeg" alt="MaragonFit Logo" class="h-14 w-14 object-contain rounded-lg">
+                        </div>
+                    </div>
+                    <div class="text-left">
+                        <h1 class="text-3xl font-bold text-black tracking-wider maragon-text" style="letter-spacing: 3px;">MARAGONFIT</h1>
+                        <p class="text-lg text-gray-600 tracking-widest font-medium" style="letter-spacing: 2px;">GYM CENTER</p>
+                    </div>
+                </div>
+                <div class="w-32 h-1 bg-black mx-auto mb-6"></div>
+            </div>
+            
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-dark mb-2">Panel de Administración</h2>
+                <p class="text-gray-600">Gestiona las clases y reservas del gimnasio</p>
+            </div>
+
+            <!-- Add Class Form -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h3 class="text-lg font-bold text-dark mb-4">
+                    <i class="fas fa-plus mr-2"></i>Crear Nueva Clase
+                </h3>
+                <form id="addClassForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Nombre de la Clase</label>
+                        <input type="text" id="className" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Ej: Yoga Matutino" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Instructor</label>
+                        <input type="text" id="classInstructor" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Nombre del instructor" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Día de la Semana</label>
+                        <select id="classDay" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            <option value="">Seleccionar día</option>
+                            <option value="Lunes">Lunes</option>
+                            <option value="Martes">Martes</option>
+                            <option value="Miércoles">Miércoles</option>
+                            <option value="Jueves">Jueves</option>
+                            <option value="Viernes">Viernes</option>
+                            <option value="Sábado">Sábado</option>
+                            <option value="Domingo">Domingo</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Horario</label>
+                        <input type="time" id="classTime" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Capacidad Máxima</label>
+                        <input type="number" id="classCapacity" min="1" max="100" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Ej: 20" required>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Descripción</label>
+                        <textarea id="classDescription" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" rows="3" placeholder="Descripción de la clase" required></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <button type="submit" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-4 px-6 rounded-lg transition-colors shadow-lg">
+                            <i class="fas fa-plus mr-2"></i>Crear Clase
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Admin Classes List -->
+            <div id="adminClassesList" class="space-y-4">
+                <!-- Admin classes will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center items-center mb-4">
+                <div class="maragon-logo bg-white p-3 rounded-xl mr-4 logo-glow">
+                    <div class="flex items-center justify-center">
+                        <img src="assets/images/logofit.jpeg" alt="MaragonFit Logo" class="h-10 w-10 object-contain rounded">
+                    </div>
+                </div>
+                <div class="text-left">
+                    <h3 class="text-xl font-bold tracking-wider maragon-text" style="letter-spacing: 2px;">MARAGONFIT</h3>
+                    <p class="text-sm text-gray-400 tracking-widest">GYM CENTER</p>
+                </div>
+            </div>
+            <div class="w-24 h-1 bg-white mx-auto mb-4"></div>
+            <p class="text-gray-400 mb-2">Tu gimnasio de confianza</p>
+            <p class="text-sm text-gray-500 mb-4">© 2025 MaragonFit Gym Center. Todos los derechos reservados.</p>
+            
+            <!-- Discrete Admin Access -->
+            <div class="mt-6">
+                <button id="adminAccessBtn" class="admin-btn text-lg text-gray-400 hover:text-white transition-all opacity-60 hover:opacity-100 bg-transparent border-none cursor-pointer font-bold px-3 py-2 rounded-full hover:bg-gray-800">
+                    ⚙️
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Login Modal -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <div class="flex justify-center items-center mb-4">
+                    <div class="bg-black p-3 rounded-xl">
+                        <div class="flex items-center justify-center">
+                            <img src="assets/images/logofit.jpeg" alt="MaragonFit Logo" class="h-10 w-10 object-contain rounded">
+                        </div>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-bold text-black mb-2">Acceso Administrador</h2>
+                <p class="text-gray-600">Panel de gestión del gimnasio</p>
+            </div>
+            
+            <form id="adminLoginForm" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 text-sm font-medium mb-2">Usuario</label>
+                    <input type="text" id="adminUsername" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent" placeholder="Nombre de usuario" required>
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-medium mb-2">Contraseña</label>
+                    <input type="password" id="adminPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent" placeholder="Contraseña" required>
+                </div>
+                <div class="flex space-x-4">
+                    <button type="button" id="cancelAdminLogin" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 bg-black hover:bg-gray-800 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Acceder
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div id="messageContainer" class="fixed top-20 right-4 z-50">
+        <!-- Messages will appear here -->
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 text-center">
+            <i class="fas fa-spinner fa-spin text-primary text-3xl mb-4"></i>
+            <p class="text-gray-700">Cargando...</p>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "maragonfit-gym",
+  "version": "1.0.0",
+  "description": "Sistema de reserva de clases para gimnasio MaragonFit",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js",
+    "install-deps": "npm install"
+  },
+  "keywords": ["gym", "booking", "fitness", "reservation"],
+  "author": "MaragonFit",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
