@@ -70,3 +70,15 @@ Thumbs.db
 
 # Windows
 desktop.ini
+
+# Build
+dist/
+build/
+
+# Netlify
+.netlify/
+
+# Local Netlify folder
+.netlify
+git remote set-url origin https://github.com/SEU_USERNAME/maragonfit.git
+git push -u origin main
