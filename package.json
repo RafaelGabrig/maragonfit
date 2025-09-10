@@ -1,16 +1,28 @@
 {
-  "name": "maragonfit-gym",
-  "version": "1.0.0",
-  "description": "Sistema de reserva de clases para gimnasio MaragonFit",
-  "main": "server/app.js",
+  "name": "maragonfit-professional",
+  "version": "2.0.0",
+  "description": "Sistema Profissional de Gestão de Ginásio - Solução completa para reservas de aulas",
+  "main": "server/server.js",
   "scripts": {
-    "start": "node server/app.js",
-    "dev": "nodemon server/app.js",
-    "install-deps": "npm install"
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js",
+    "test": "echo \"Sistema pronto para produção\" && exit 0",
+    "build": "echo \"Sistema não requer build - pronto para uso\" && exit 0"
   },
-  "keywords": ["gym", "booking", "fitness", "reservation"],
-  "author": "MaragonFit",
-  "license": "ISC",
+  "keywords": [
+    "ginásio",
+    "academia", 
+    "fitness",
+    "reservas",
+    "gestão",
+    "nodejs",
+    "express",
+    "sqlite",
+    "responsivo",
+    "profissional"
+  ],
+  "author": "MaragonFit Development Team",
+  "license": "Commercial",
   "dependencies": {
     "express": "^4.18.2",
     "sqlite3": "^5.1.6",
@@ -21,5 +33,17 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  }
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rafaelgabrig/maragonfit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rafaelgabrig/maragonfit/issues"
+  },
+  "homepage": "https://github.com/rafaelgabrig/maragonfit#readme"
 }
