@@ -23,11 +23,21 @@ router.get('/', (req, res) => {
             const classesWithAvailability = rows.map(cls => {
                 const now = new Date();
                 const classDate = cls.next_class_date ? new Date(cls.next_class_date) : null;
-                const hoursUntilClass = classDate ? (classDate.getTime() - now.getTime()) / (1000 * 60 * 60) : 0;
+                let hoursUntilClass = 0;
+                let canReserve = false;
+                
+                if (classDate && !isNaN(classDate.getTime())) {
+                    hoursUntilClass = (classDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+                    canReserve = hoursUntilClass <= 24 && hoursUntilClass > 0;
+                } else {
+                    // Se não há data da próxima aula, considerar como "muito cedo para reservar"
+                    hoursUntilClass = 48; // Simular que falta mais de 24h
+                    canReserve = false;
+                }
                 
                 return {
                     ...cls,
-                    canReserve: hoursUntilClass <= 24 && hoursUntilClass > 0, // Solo en las últimas 24h
+                    canReserve: canReserve,
                     hoursUntilClass: Math.round(hoursUntilClass),
                     nextClassDate: classDate ? classDate.toISOString() : null,
                     isBooked: false, // Will be updated below if user provided

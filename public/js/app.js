@@ -11,8 +11,8 @@ class MaragonFitApp {
     init() {
         this.bindEvents();
         this.checkAuthStatus();
-        this.loadClasses();
-        this.startAutoRefresh();
+        // Removido loadClasses() para evitar conflitos
+        // As aulas serão carregadas pelo checkAuthStatus ou quando o usuário fazer login
     }
 
     bindEvents() {
@@ -231,19 +231,22 @@ class MaragonFitApp {
         const storedUser = localStorage.getItem('maragonfit_user');
         const storedView = localStorage.getItem('maragonfit_view');
         
+        // Se tem view admin salva, mostrar painel admin mesmo sem user
+        if (storedView === 'admin') {
+            this.showAdminPanel();
+            this.startAutoRefresh();
+            return;
+        }
+        
+        // Caso contrário, verificar se há usuário logado
         if (storedUser) {
             this.currentUser = JSON.parse(storedUser);
             this.updateUserInfo();
-            
-            // Restaurar a view anterior (admin ou user)
-            if (storedView === 'admin') {
-                this.showAdminPanel();
-            } else {
-                this.showUserDashboard();
-            }
-            
-            // Iniciar auto-refresh se o usuário já estiver logado
+            this.showUserDashboard();
             this.startAutoRefresh();
+        } else {
+            // Se não há usuário logado, carregar aulas para preview na tela de autenticação
+            this.loadUserClasses();
         }
     }
 
@@ -251,6 +254,12 @@ class MaragonFitApp {
         if (this.currentUser) {
             document.getElementById('userName').textContent = this.currentUser.name;
             document.getElementById('userPhone').textContent = this.currentUser.phone;
+        } else {
+            // Para admin sem currentUser
+            const userNameEl = document.getElementById('userName');
+            const userPhoneEl = document.getElementById('userPhone');
+            if (userNameEl) userNameEl.textContent = 'Administrador';
+            if (userPhoneEl) userPhoneEl.textContent = 'Admin';
         }
     }
 
@@ -262,15 +271,13 @@ class MaragonFitApp {
 
         // Configurar auto-refresh a cada 30 segundos
         this.refreshInterval = setInterval(() => {
-            if (this.currentUser) {
-                const currentView = localStorage.getItem('maragonfit_view');
-                
-                // Recarregar dados baseado na view atual
-                if (currentView === 'admin') {
-                    this.loadAdminClasses();
-                } else {
-                    this.loadUserClasses();
-                }
+            const currentView = localStorage.getItem('maragonfit_view');
+            
+            // Recarregar dados baseado na view atual
+            if (currentView === 'admin') {
+                this.loadAdminClasses();
+            } else if (this.currentUser) {
+                this.loadUserClasses();
             }
         }, 30000); // 30 segundos
     }
