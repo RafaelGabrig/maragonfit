@@ -304,7 +304,8 @@ class MaragonFitApp {
                 : `${this.apiUrl}/classes`;
             
             // Add cache buster to ensure fresh data
-            const url = `${baseUrl}&t=${Date.now()}`;
+            const separator = baseUrl.includes('?') ? '&' : '?';
+            const url = `${baseUrl}${separator}t=${Date.now()}`;
             
             const response = await fetch(url);
             const data = await response.json();
@@ -349,24 +350,9 @@ class MaragonFitApp {
             return;
         }
 
-        const formatDate = (dateString) => {
-            const date = new Date(dateString);
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                timeZone: 'America/Sao_Paulo' // Fuso horário local do Brasil
-            };
-            return date.toLocaleDateString('es-ES', options);
-        };
-
         container.innerHTML = classes.map(cls => {
             const canReserve = cls.canReserve;
             const hoursUntil = cls.hoursUntilClass;
-            const nextClassFormatted = cls.nextClassDate ? formatDate(cls.nextClassDate) : 'Fecha por confirmar';
             
             let statusMessage = '';
             let statusClass = '';
@@ -418,7 +404,7 @@ class MaragonFitApp {
                         </div>
                         <div class="space-y-1 text-gray-600 ml-11">
                             <p><i class="fas fa-user mr-2"></i>Instructor: ${cls.instructor}</p>
-                            <p><i class="fas fa-calendar mr-2"></i>Próxima clase: ${nextClassFormatted}</p>
+                            <p><i class="fas fa-calendar mr-2"></i>Horario: ${cls.day} - ${cls.time}</p>
                             <p><i class="fas fa-clock mr-2"></i>Faltan ${hoursUntil} horas</p>
                             <p><i class="fas fa-users mr-2"></i>Capacidad: ${cls.currentBookings || 0}/${cls.max_capacity || 10} 
                                 <span class="text-sm font-medium ${(cls.currentBookings || 0) >= (cls.max_capacity || 10) ? 'text-red-600' : 'text-green-600'}">
