@@ -4,6 +4,7 @@ class MaragonFitApp {
         this.currentUser = null;
         this.currentView = 'auth';
         this.apiUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api';
+        this.refreshInterval = null;
         this.init();
     }
 
@@ -11,6 +12,7 @@ class MaragonFitApp {
         this.bindEvents();
         this.checkAuthStatus();
         this.loadClasses();
+        this.startAutoRefresh();
     }
 
     bindEvents() {
@@ -65,6 +67,7 @@ class MaragonFitApp {
         document.getElementById('userDashboard').classList.remove('hidden');
         document.getElementById('userMenu').classList.remove('hidden');
         this.currentView = 'user';
+        localStorage.setItem('maragonfit_view', 'user');
         this.loadUserClasses();
     }
 
@@ -74,6 +77,7 @@ class MaragonFitApp {
         document.getElementById('adminPanel').classList.remove('hidden');
         document.getElementById('userMenu').classList.remove('hidden');
         this.currentView = 'admin';
+        localStorage.setItem('maragonfit_view', 'admin');
         this.loadAdminClasses();
     }
 
@@ -112,6 +116,7 @@ class MaragonFitApp {
         if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
             this.hideAdminLoginModal();
             this.showAdminPanel();
+            this.startAutoRefresh(); // Iniciar auto-refresh para admin
             this.showMessage('Acceso de administrador autorizado', 'success');
         } else {
             this.showMessage('Credenciales de administrador incorrectas', 'error');
@@ -154,6 +159,7 @@ class MaragonFitApp {
                 localStorage.setItem('maragonfit_user', JSON.stringify(data.user));
                 this.updateUserInfo();
                 this.showUserDashboard();
+                this.startAutoRefresh(); // Iniciar auto-refresh após login
                 this.showMessage('¡Bienvenido de nuevo!', 'success');
             } else {
                 this.showMessage(data.message || 'Error al iniciar sesión', 'error');
@@ -192,6 +198,7 @@ class MaragonFitApp {
                 localStorage.setItem('maragonfit_user', JSON.stringify(data.user));
                 this.updateUserInfo();
                 this.showUserDashboard();
+                this.startAutoRefresh(); // Iniciar auto-refresh após registro
                 this.showMessage('¡Cuenta creada exitosamente!', 'success');
             } else {
                 this.showMessage(data.message || 'Error al crear la cuenta', 'error');
@@ -207,6 +214,14 @@ class MaragonFitApp {
     logout() {
         this.currentUser = null;
         localStorage.removeItem('maragonfit_user');
+        localStorage.removeItem('maragonfit_view'); // Limpar view salva
+        
+        // Parar auto-refresh
+        if (this.refreshInterval) {
+            clearInterval(this.refreshInterval);
+            this.refreshInterval = null;
+        }
+        
         this.hideAdminLoginModal(); // Cerrar modal si está abierto
         this.showAuthSection();
         this.showMessage('Sesión cerrada', 'success');
@@ -214,10 +229,21 @@ class MaragonFitApp {
 
     checkAuthStatus() {
         const storedUser = localStorage.getItem('maragonfit_user');
+        const storedView = localStorage.getItem('maragonfit_view');
+        
         if (storedUser) {
             this.currentUser = JSON.parse(storedUser);
             this.updateUserInfo();
-            this.showUserDashboard();
+            
+            // Restaurar a view anterior (admin ou user)
+            if (storedView === 'admin') {
+                this.showAdminPanel();
+            } else {
+                this.showUserDashboard();
+            }
+            
+            // Iniciar auto-refresh se o usuário já estiver logado
+            this.startAutoRefresh();
         }
     }
 
@@ -226,6 +252,27 @@ class MaragonFitApp {
             document.getElementById('userName').textContent = this.currentUser.name;
             document.getElementById('userPhone').textContent = this.currentUser.phone;
         }
+    }
+
+    startAutoRefresh() {
+        // Limpar qualquer intervalo anterior
+        if (this.refreshInterval) {
+            clearInterval(this.refreshInterval);
+        }
+
+        // Configurar auto-refresh a cada 30 segundos
+        this.refreshInterval = setInterval(() => {
+            if (this.currentUser) {
+                const currentView = localStorage.getItem('maragonfit_view');
+                
+                // Recarregar dados baseado na view atual
+                if (currentView === 'admin') {
+                    this.loadAdminClasses();
+                } else {
+                    this.loadUserClasses();
+                }
+            }
+        }, 30000); // 30 segundos
     }
 
     // Classes Methods
@@ -492,7 +539,9 @@ class MaragonFitApp {
             if (response.ok) {
                 this.showMessage('Clase creada exitosamente', 'success');
                 e.target.reset();
+                // Recarregar ambas as views para sincronizar
                 this.loadAdminClasses();
+                this.loadUserClasses(); // Atualizar também a view do usuário
             } else {
                 this.showMessage(data.message || 'Error al crear la clase', 'error');
             }
@@ -541,8 +590,9 @@ class MaragonFitApp {
                 } else {
                     this.showMessage('¡Clase reservada exitosamente!', 'success');
                 }
-                // Refresh classes to update availability
+                // Refresh classes to update availability in both views
                 this.loadUserClasses();
+                this.loadAdminClasses(); // Atualizar também a view do admin
             } else {
                 this.showMessage(data.message || 'Error al reservar la clase', 'error');
             }
@@ -571,8 +621,9 @@ class MaragonFitApp {
 
             if (response.ok) {
                 this.showMessage('Reserva cancelada', 'success');
-                // Refresh classes to update availability
+                // Refresh classes to update availability in both views
                 this.loadUserClasses();
+                this.loadAdminClasses(); // Atualizar também a view do admin
             } else {
                 this.showMessage(data.message || 'Error al cancelar la reserva', 'error');
             }
@@ -600,7 +651,9 @@ class MaragonFitApp {
 
             if (response.ok) {
                 this.showMessage('Clase eliminada', 'success');
+                // Recarregar ambas as views para sincronizar
                 this.loadAdminClasses();
+                this.loadUserClasses(); // Atualizar também a view do usuário
             } else {
                 this.showMessage(data.message || 'Error al eliminar la clase', 'error');
             }
@@ -721,7 +774,9 @@ class MaragonFitApp {
 
             if (response.ok) {
                 this.showMessage('Clase actualizada exitosamente', 'success');
+                // Recarregar ambas as views para sincronizar
                 this.loadAdminClasses();
+                this.loadUserClasses(); // Atualizar também a view do usuário
             } else {
                 this.showMessage(data.message || 'Error al actualizar la clase', 'error');
             }
