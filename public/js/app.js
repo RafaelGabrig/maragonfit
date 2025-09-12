@@ -299,9 +299,12 @@ class MaragonFitApp {
     async loadUserClasses() {
         try {
             // Include user ID to get booking status
-            const url = this.currentUser 
+            const baseUrl = this.currentUser 
                 ? `${this.apiUrl}/classes?userId=${this.currentUser.id}`
                 : `${this.apiUrl}/classes`;
+            
+            // Add cache buster to ensure fresh data
+            const url = `${baseUrl}&t=${Date.now()}`;
             
             const response = await fetch(url);
             const data = await response.json();
@@ -318,7 +321,9 @@ class MaragonFitApp {
 
     async loadAdminClasses() {
         try {
-            const response = await fetch(`${this.apiUrl}/classes`);
+            // Add cache buster to ensure fresh data
+            const url = `${this.apiUrl}/classes?t=${Date.now()}`;
+            const response = await fetch(url);
             const data = await response.json();
             
             if (response.ok) {
@@ -352,7 +357,8 @@ class MaragonFitApp {
                 month: 'long', 
                 day: 'numeric',
                 hour: '2-digit',
-                minute: '2-digit'
+                minute: '2-digit',
+                timeZone: 'America/Sao_Paulo' // Fuso horário local do Brasil
             };
             return date.toLocaleDateString('es-ES', options);
         };
@@ -981,7 +987,7 @@ class MaragonFitApp {
                                         <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
                                             <div>
                                                 <span class="font-medium">${res.user_phone}</span>
-                                                <span class="text-sm text-gray-500 ml-2">${new Date(res.booking_date).toLocaleString('es-ES')}</span>
+                                                <span class="text-sm text-gray-500 ml-2">${new Date(res.booking_date).toLocaleString('es-ES', { timeZone: 'America/Sao_Paulo' })}</span>
                                             </div>
                                             <button onclick="app.removeReservation(${classId}, ${res.user_id})" 
                                                     class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
@@ -1005,7 +1011,7 @@ class MaragonFitApp {
                                             <div>
                                                 <span class="font-medium">${wait.user_phone}</span>
                                                 <span class="text-sm text-gray-500 ml-2">Posición: ${index + 1}</span>
-                                                <span class="text-sm text-gray-500 ml-2">${new Date(wait.waitlist_date).toLocaleString('es-ES')}</span>
+                                                <span class="text-sm text-gray-500 ml-2">${new Date(wait.waitlist_date).toLocaleString('es-ES', { timeZone: 'America/Sao_Paulo' })}</span>
                                             </div>
                                             <div class="space-x-2">
                                                 <button onclick="app.promoteFromWaitlist(${classId}, ${wait.user_id})" 

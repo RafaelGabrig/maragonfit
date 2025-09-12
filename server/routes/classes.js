@@ -189,6 +189,7 @@ router.post('/', (req, res) => {
         const [hours, minutes] = time.split(':');
         
         let nextDate = new Date();
+        // Ajustar horário considerando fuso local (UTC-3 para São Paulo/Argentina)
         nextDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         
         while (nextDate.getDay() !== dayIndex || nextDate <= now) {
@@ -196,6 +197,7 @@ router.post('/', (req, res) => {
             nextDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         }
         
+        // Salvar como string local sem conversão UTC
         return nextDate.toISOString();
     };
 
@@ -246,11 +248,30 @@ router.put('/:id', (req, res) => {
         });
     }
 
+    // Recalculate next class date when updating
+    const getNextClassDate = (dayName, time) => {
+        const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        const dayIndex = days.indexOf(dayName);
+        const now = new Date();
+        const [hours, minutes] = time.split(':');
+        
+        let nextDate = new Date();
+        nextDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        
+        while (nextDate.getDay() !== dayIndex || nextDate <= now) {
+            nextDate.setDate(nextDate.getDate() + 1);
+            nextDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        }
+        
+        return nextDate.toISOString();
+    };
+
+    const nextClassDate = getNextClassDate(day, time);
     const database = db.getDb();
     
     database.run(
-        'UPDATE classes SET name = ?, instructor = ?, description = ?, day = ?, time = ?, max_capacity = ? WHERE id = ?',
-        [name, instructor, description, day, time, maxCapacity, id],
+        'UPDATE classes SET name = ?, instructor = ?, description = ?, day = ?, time = ?, max_capacity = ?, next_class_date = ? WHERE id = ?',
+        [name, instructor, description, day, time, maxCapacity, nextClassDate, id],
         function(err) {
             if (err) {
                 console.error('Database error:', err);
