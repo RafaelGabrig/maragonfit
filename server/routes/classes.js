@@ -27,7 +27,14 @@ router.get('/', (req, res) => {
                 let canReserve = false;
                 
                 if (classDate && !isNaN(classDate.getTime())) {
-                    hoursUntilClass = (classDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+                    // Calcular horas considerando que o servidor está em UTC
+                    // e queremos o horário brasileiro (UTC-3)
+                    const diffMs = classDate.getTime() - now.getTime();
+                    hoursUntilClass = diffMs / (1000 * 60 * 60);
+                    
+                    // Ajustar para fuso horário brasileiro (subtrair 3 horas do cálculo)
+                    hoursUntilClass = hoursUntilClass - 3;
+                    
                     canReserve = hoursUntilClass <= 24 && hoursUntilClass > 0;
                 } else {
                     // Se não há data da próxima aula, considerar como "muito cedo para reservar"
